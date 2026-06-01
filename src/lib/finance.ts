@@ -250,6 +250,37 @@ function buildProjection(
   return years;
 }
 
+/**
+ * Keeps inputs sane before they reach the calculations. Nothing here can be
+ * negative, percentages that represent a share of a whole are capped at 100,
+ * and the loan term is forced to be at least 1 year. This stops a stray
+ * keystroke (like a negative price) from producing nonsense numbers.
+ */
+export function clampInputs(inputs: PropertyInputs): PropertyInputs {
+  const atLeastZero = (n: number) => (Number.isFinite(n) && n > 0 ? n : 0);
+  const percent0to100 = (n: number) => Math.min(100, Math.max(0, n || 0));
+  return {
+    ...inputs,
+    purchasePrice: atLeastZero(inputs.purchasePrice),
+    downPaymentPercent: percent0to100(inputs.downPaymentPercent),
+    closingCosts: atLeastZero(inputs.closingCosts),
+    rehabBudget: atLeastZero(inputs.rehabBudget),
+    interestRate: atLeastZero(inputs.interestRate),
+    loanTermYears: Math.max(1, Math.round(inputs.loanTermYears || 1)),
+    monthlyRent: atLeastZero(inputs.monthlyRent),
+    vacancyPercent: percent0to100(inputs.vacancyPercent),
+    propertyTaxAnnual: atLeastZero(inputs.propertyTaxAnnual),
+    insuranceAnnual: atLeastZero(inputs.insuranceAnnual),
+    maintenancePercent: percent0to100(inputs.maintenancePercent),
+    managementPercent: percent0to100(inputs.managementPercent),
+    hoaMonthly: atLeastZero(inputs.hoaMonthly),
+    otherMonthly: atLeastZero(inputs.otherMonthly),
+    appreciationPercent: Math.max(0, inputs.appreciationPercent || 0),
+    rentGrowthPercent: Math.max(0, inputs.rentGrowthPercent || 0),
+    expenseGrowthPercent: Math.max(0, inputs.expenseGrowthPercent || 0),
+  };
+}
+
 /** Sensible starting numbers so the app shows a real example on first load. */
 export const DEFAULT_INPUTS: PropertyInputs = {
   purchasePrice: 200000,

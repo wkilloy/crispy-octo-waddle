@@ -47,6 +47,14 @@ export interface ProjectionYear {
   roiPercent: number; // totalReturn / total cash invested, as a percent
 }
 
+/** A property the user has named and saved (stored in the browser). */
+export interface SavedDeal {
+  id: string; // unique id, used as a React key and for delete
+  name: string; // user-given label, e.g. "123 Main St"
+  inputs: PropertyInputs; // the full set of numbers for this deal
+  savedAt: number; // timestamp (ms) so we can sort newest-first
+}
+
 /** Everything the engine computes from a set of inputs. */
 export interface AnalysisResult {
   // Cash invested up front (the denominator for return calculations).

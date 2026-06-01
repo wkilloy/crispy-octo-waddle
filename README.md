@@ -17,6 +17,10 @@ projection** of equity and ROI.
 - **Investor metrics:** cash flow, cap rate, cash-on-cash, NOI, DSCR, GRM, 1% rule.
 - **Long-term outlook:** a chart and table projecting equity, cumulative cash
   flow, and total ROI across the life of the loan.
+- **Save & compare deals:** name and save properties (stored in your browser),
+  then view them side-by-side with the strongest numbers highlighted.
+- **Shareable links:** the whole analysis is encoded in the URL, so you can send
+  someone a link and they see your exact numbers — no account needed.
 - **No backend required:** everything runs in the browser, so it's free to host.
 
 ---
@@ -74,13 +78,18 @@ src/
   lib/
     finance.ts        # ALL the calculations (the core logic) — pure & commented
     finance.test.ts   # unit tests that check every formula by hand
-    types.ts          # the shape of the inputs and results
+    share.ts          # encode/decode inputs to a shareable URL
+    share.test.ts     # round-trip tests for shareable links
+    storage.ts        # save/load deals in the browser (localStorage)
+    types.ts          # the shape of the inputs, deals, and results
     format.ts         # currency / percent formatting helpers
   components/
-    InputForm.tsx       # the property-details form
-    ResultsPanel.tsx    # the metric cards
-    ProjectionChart.tsx # the equity / cash-flow chart
-    ProjectionTable.tsx # the year-by-year table
+    InputForm.tsx        # the property-details form
+    ResultsPanel.tsx     # the metric cards
+    ProjectionChart.tsx  # the equity / cash-flow chart
+    ProjectionTable.tsx  # the year-by-year table
+    DealManager.tsx      # save / load / delete deals + share link
+    ComparisonTable.tsx  # side-by-side comparison of saved deals
   App.tsx             # ties the form to the results
   main.tsx            # app entry point
 ```

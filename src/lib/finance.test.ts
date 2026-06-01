@@ -13,6 +13,7 @@ import {
   capRatePercent,
   cashOnCashPercent,
   analyzeProperty,
+  clampInputs,
   DEFAULT_INPUTS,
 } from "./finance";
 
@@ -67,6 +68,32 @@ describe("capRatePercent", () => {
 describe("cashOnCashPercent", () => {
   it("is annual cash flow divided by cash invested, as a percent", () => {
     expect(cashOnCashPercent(1338.24, 46000)).toBeCloseTo(2.909, 3);
+  });
+});
+
+describe("clampInputs", () => {
+  it("forces negative money values up to 0", () => {
+    const cleaned = clampInputs({
+      ...DEFAULT_INPUTS,
+      purchasePrice: -5000,
+      monthlyRent: -100,
+    });
+    expect(cleaned.purchasePrice).toBe(0);
+    expect(cleaned.monthlyRent).toBe(0);
+  });
+
+  it("caps share-of-whole percentages at 100", () => {
+    const cleaned = clampInputs({ ...DEFAULT_INPUTS, vacancyPercent: 250 });
+    expect(cleaned.vacancyPercent).toBe(100);
+  });
+
+  it("keeps the loan term at least 1 year", () => {
+    const cleaned = clampInputs({ ...DEFAULT_INPUTS, loanTermYears: 0 });
+    expect(cleaned.loanTermYears).toBe(1);
+  });
+
+  it("leaves valid inputs unchanged", () => {
+    expect(clampInputs(DEFAULT_INPUTS)).toEqual(DEFAULT_INPUTS);
   });
 });
 
