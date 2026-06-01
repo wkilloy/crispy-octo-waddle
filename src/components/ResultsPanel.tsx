@@ -34,11 +34,11 @@ function MetricCard({
         ? "text-rose-600"
         : "text-slate-800";
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
-        {label}
+    <div className="card p-4 transition hover:shadow-md">
+      <div className="section-label">{label}</div>
+      <div className={`mt-1.5 text-2xl font-bold tabular-nums ${toneClass}`}>
+        {value}
       </div>
-      <div className={`mt-1 text-2xl font-bold ${toneClass}`}>{value}</div>
       {hint && <div className="mt-1 text-xs text-slate-400">{hint}</div>}
     </div>
   );

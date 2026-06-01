@@ -34,9 +34,9 @@ function NumberField({
 }: FieldProps) {
   return (
     <label className="block">
-      <span className="text-sm font-medium text-slate-600">{label}</span>
-      <div className="mt-1 flex items-center rounded-md border border-slate-300 bg-white focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
-        {prefix && <span className="pl-2 text-slate-400">{prefix}</span>}
+      <span className="text-xs font-medium text-slate-500">{label}</span>
+      <div className="mt-1 flex items-center rounded-lg border border-slate-300 bg-white transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20">
+        {prefix && <span className="pl-2.5 text-sm text-slate-400">{prefix}</span>}
         <input
           type="number"
           step={step}
@@ -46,9 +46,9 @@ function NumberField({
             // `Number(...)` converts the text input to a number; empty -> 0.
             onChange({ ...values, [field]: Number(e.target.value) })
           }
-          className="w-full bg-transparent px-2 py-1.5 text-right outline-none"
+          className="w-full bg-transparent px-2.5 py-2 text-right text-sm font-medium tabular-nums outline-none"
         />
-        {suffix && <span className="pr-2 text-slate-400">{suffix}</span>}
+        {suffix && <span className="pr-2.5 text-sm text-slate-400">{suffix}</span>}
       </div>
     </label>
   );
@@ -63,10 +63,8 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <fieldset className="space-y-3">
-      <legend className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
-        {title}
-      </legend>
+    <fieldset className="space-y-3 border-t border-slate-100 pt-4 first:border-0 first:pt-0">
+      <legend className="section-label">{title}</legend>
       <div className="grid grid-cols-2 gap-3">{children}</div>
     </fieldset>
   );
@@ -83,12 +81,8 @@ export default function InputForm({
   return (
     <form className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-slate-800">Property Details</h2>
-        <button
-          type="button"
-          onClick={onReset}
-          className="text-sm text-indigo-600 hover:underline"
-        >
+        <h2 className="text-base font-bold text-slate-900">Property Details</h2>
+        <button type="button" onClick={onReset} className="btn-link">
           Reset to example
         </button>
       </div>

@@ -64,35 +64,32 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-5">
-          <h1 className="text-2xl font-bold text-slate-900">
-            🏠 Rental Property Analyzer
-          </h1>
-          <p className="text-sm text-slate-500">
-            Enter a property's numbers to instantly see cash flow, returns, and a
-            long-term projection.
-          </p>
+      {/* Sticky header with a branded logo mark */}
+      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-lg font-bold text-white shadow-card">
+              RP
+            </div>
+            <div>
+              <h1 className="text-lg font-bold leading-tight text-slate-900">
+                Rental Property Analyzer
+              </h1>
+              <p className="text-xs text-slate-500">
+                Underwrite any deal in seconds
+              </p>
+            </div>
+          </div>
 
-          {/* View tabs */}
-          <nav className="mt-4 flex gap-1">
-            <TabButton
-              active={view === "analyze"}
-              onClick={() => setView("analyze")}
-            >
+          {/* Segmented tab control */}
+          <nav className="flex gap-1 rounded-lg bg-slate-100 p-1">
+            <TabButton active={view === "analyze"} onClick={() => setView("analyze")}>
               Analyze
             </TabButton>
-            <TabButton
-              active={view === "analyst"}
-              onClick={() => setView("analyst")}
-            >
-              🤖 AI Analyst
+            <TabButton active={view === "analyst"} onClick={() => setView("analyst")}>
+              AI Analyst
             </TabButton>
-            <TabButton
-              active={view === "compare"}
-              onClick={() => setView("compare")}
-            >
+            <TabButton active={view === "compare"} onClick={() => setView("compare")}>
               Compare ({savedDeals.length})
             </TabButton>
           </nav>
@@ -103,7 +100,7 @@ export default function App() {
         {view === "analyze" && (
           <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
             {/* Left: inputs */}
-            <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <section className="card h-fit p-5">
               <InputForm
                 values={inputs}
                 onChange={setInputs}
@@ -143,15 +140,17 @@ export default function App() {
         {view === "compare" && <ComparisonTable deals={savedDeals} />}
       </main>
 
-      <footer className="mx-auto max-w-6xl px-4 py-6 text-center text-xs text-slate-400">
-        Estimates only — not financial advice. Always verify numbers before
-        investing.
+      <footer className="mt-8 border-t border-slate-200">
+        <div className="mx-auto max-w-6xl px-4 py-6 text-center text-xs text-slate-400">
+          Estimates only — not financial advice. Always verify numbers before
+          investing.
+        </div>
       </footer>
     </div>
   );
 }
 
-// A single tab button in the header nav.
+// A single tab inside the segmented control in the header nav.
 function TabButton({
   active,
   onClick,
@@ -165,10 +164,10 @@ function TabButton({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-md px-4 py-1.5 text-sm font-medium ${
+      className={`rounded-md px-4 py-1.5 text-sm font-semibold transition ${
         active
-          ? "bg-indigo-600 text-white"
-          : "text-slate-600 hover:bg-slate-100"
+          ? "bg-white text-slate-900 shadow-card"
+          : "text-slate-500 hover:text-slate-800"
       }`}
     >
       {children}

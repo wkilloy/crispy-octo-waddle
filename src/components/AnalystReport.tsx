@@ -55,7 +55,7 @@ export default function AnalystReport({ analysis }: AnalystReportProps) {
   return (
     <div className="space-y-4">
       {/* Verdict header */}
-      <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="card p-5">
         <div className="flex items-center justify-between">
           <span
             className={`rounded-full px-3 py-1 text-sm font-semibold ${style.badge}`}
@@ -88,7 +88,7 @@ export default function AnalystReport({ analysis }: AnalystReportProps) {
 
       {/* Highlights & risks */}
       <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="card p-4">
           <List
             title="✅ Highlights"
             items={analysis.highlights}
@@ -96,7 +96,7 @@ export default function AnalystReport({ analysis }: AnalystReportProps) {
             empty="No standout strengths at these numbers."
           />
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="card p-4">
           <List
             title="⚠️ Biggest Risks"
             items={analysis.risks}
@@ -107,7 +107,7 @@ export default function AnalystReport({ analysis }: AnalystReportProps) {
       </div>
 
       {/* Seller questions */}
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="card p-4">
         <List
           title="❓ Questions to Ask the Seller"
           items={analysis.sellerQuestions}
@@ -120,9 +120,9 @@ export default function AnalystReport({ analysis }: AnalystReportProps) {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-3 text-center shadow-sm">
-      <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
-      <div className="mt-1 text-lg font-bold text-slate-800">{value}</div>
+    <div className="card p-3 text-center">
+      <div className="section-label">{label}</div>
+      <div className="mt-1 text-lg font-bold tabular-nums text-slate-800">{value}</div>
     </div>
   );
 }

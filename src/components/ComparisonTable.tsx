@@ -68,7 +68,7 @@ export default function ComparisonTable({ deals }: ComparisonTableProps) {
   // Nothing to compare yet — show a friendly hint instead of an empty table.
   if (deals.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
+      <div className="rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">
         No saved deals yet. Go to the <strong>Analyze</strong> tab, enter a
         property, name it, and click <strong>Save</strong> to compare deals here.
       </div>
@@ -76,13 +76,11 @@ export default function ComparisonTable({ deals }: ComparisonTableProps) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-indigo-600">
-        Deal Comparison
-      </h3>
-      <table className="w-full text-right text-sm">
+    <div className="card overflow-x-auto p-4">
+      <h3 className="section-label mb-3">Deal Comparison</h3>
+      <table className="w-full text-right text-sm tabular-nums">
         <thead>
-          <tr className="border-b border-slate-200 text-xs uppercase text-slate-500">
+          <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400">
             <th className="py-2 text-left">Metric</th>
             {deals.map((d) => (
               <th key={d.id} className="py-2">

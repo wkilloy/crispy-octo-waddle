@@ -47,10 +47,8 @@ export default function DealManager({
   }
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-indigo-600">
-        Save & Share
-      </h3>
+    <div className="card p-4">
+      <h3 className="section-label mb-3">Save & Share</h3>
 
       {/* Save the current deal under a name. */}
       <div className="flex gap-2">
@@ -60,20 +58,12 @@ export default function DealManager({
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSave()}
           placeholder="Name this deal (e.g. 123 Main St)"
-          className="flex-1 rounded-md border border-slate-300 px-3 py-1.5 text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          className="input flex-1"
         />
-        <button
-          type="button"
-          onClick={handleSave}
-          className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700"
-        >
+        <button type="button" onClick={handleSave} className="btn-primary">
           Save
         </button>
-        <button
-          type="button"
-          onClick={handleShare}
-          className="rounded-md border border-indigo-600 px-3 py-1.5 text-sm font-medium text-indigo-600 hover:bg-indigo-50"
-        >
+        <button type="button" onClick={handleShare} className="btn-secondary">
           {copied ? "Copied!" : "Share link"}
         </button>
       </div>

@@ -34,10 +34,8 @@ export default function DocumentUpload({ files, onChange }: DocumentUploadProps)
   }
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-indigo-600">
-        Deal Documents
-      </h3>
+    <div className="card p-4">
+      <h3 className="section-label mb-3">Deal Documents</h3>
 
       {/* Drop zone */}
       <div

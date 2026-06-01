@@ -16,13 +16,11 @@ export default function ProjectionTable({ projection }: ProjectionTableProps) {
   const rows = projection.filter((p) => milestones.includes(p.year));
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-indigo-600">
-        Milestone Projection
-      </h3>
-      <table className="w-full text-right text-sm">
+    <div className="card overflow-x-auto p-4">
+      <h3 className="section-label mb-3">Milestone Projection</h3>
+      <table className="w-full text-right text-sm tabular-nums">
         <thead>
-          <tr className="border-b border-slate-200 text-xs uppercase text-slate-500">
+          <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400">
             <th className="py-2 text-left">Year</th>
             <th className="py-2">Property Value</th>
             <th className="py-2">Loan Balance</th>
@@ -33,7 +31,10 @@ export default function ProjectionTable({ projection }: ProjectionTableProps) {
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr key={r.year} className="border-b border-slate-100 last:border-0">
+            <tr
+              key={r.year}
+              className="border-b border-slate-100 transition last:border-0 hover:bg-slate-50"
+            >
               <td className="py-2 text-left font-medium">{r.year}</td>
               <td className="py-2">{formatCurrency(r.propertyValue)}</td>
               <td className="py-2">{formatCurrency(r.loanBalance)}</td>

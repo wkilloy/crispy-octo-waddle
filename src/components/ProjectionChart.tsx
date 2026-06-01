@@ -21,8 +21,8 @@ interface ProjectionChartProps {
 
 export default function ProjectionChart({ projection }: ProjectionChartProps) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-indigo-600">
+    <div className="card p-4">
+      <h3 className="section-label mb-3">
         Equity & Cumulative Cash Flow Over Time
       </h3>
       {/* ResponsiveContainer makes the chart fill the width of its parent. */}

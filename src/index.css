@@ -4,6 +4,44 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-slate-100 text-slate-800;
+@layer base {
+  html {
+    font-family: theme("fontFamily.sans");
+  }
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reusable component classes — our small "design system". Defining the look of
+   cards, buttons, inputs, and labels ONCE here keeps every screen consistent
+   and the component markup clean.
+--------------------------------------------------------------------------- */
+@layer components {
+  /* Surfaces */
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white shadow-card;
+  }
+
+  /* The small grey heading above a group of content. */
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-wider text-slate-400;
+  }
+
+  /* Form inputs */
+  .input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20;
+  }
+
+  /* Buttons (each variant is self-contained to avoid @apply chaining issues) */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 active:bg-indigo-800;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50;
+  }
+  .btn-link {
+    @apply text-sm font-medium text-indigo-600 transition hover:text-indigo-700 hover:underline;
+  }
 }
