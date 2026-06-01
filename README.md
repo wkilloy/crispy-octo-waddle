@@ -17,6 +17,11 @@ projection** of equity and ROI.
 - **Investor metrics:** cash flow, cap rate, cash-on-cash, NOI, DSCR, GRM, 1% rule.
 - **Long-term outlook:** a chart and table projecting equity, cumulative cash
   flow, and total ROI across the life of the loan.
+- **AI Deal Analyst:** a one-click underwriting verdict (strong / fair / weak),
+  a deal score, the biggest risks, and the questions to ask the seller. The
+  *math* comes from the verified finance engine; only the judgment is layered on
+  top — so the numbers can never be "hallucinated." (Rules-based today;
+  document-reading AI is a drop-in upgrade — see `ROADMAP.md`.)
 - **Save & compare deals:** name and save properties (stored in your browser),
   then view them side-by-side with the strongest numbers highlighted.
 - **Shareable links:** the whole analysis is encoded in the URL, so you can send
@@ -78,6 +83,8 @@ src/
   lib/
     finance.ts        # ALL the calculations (the core logic) — pure & commented
     finance.test.ts   # unit tests that check every formula by hand
+    analyst.ts        # rules-based deal verdict/risks/questions (AI-ready seam)
+    analyst.test.ts   # tests for the analyst's judgment
     share.ts          # encode/decode inputs to a shareable URL
     share.test.ts     # round-trip tests for shareable links
     storage.ts        # save/load deals in the browser (localStorage)
@@ -90,6 +97,8 @@ src/
     ProjectionTable.tsx  # the year-by-year table
     DealManager.tsx      # save / load / delete deals + share link
     ComparisonTable.tsx  # side-by-side comparison of saved deals
+    DocumentUpload.tsx   # attach OM / rent roll / T12 (AI Analyst tab)
+    AnalystReport.tsx    # verdict, score, risks, seller questions
   App.tsx             # ties the form to the results
   main.tsx            # app entry point
 ```

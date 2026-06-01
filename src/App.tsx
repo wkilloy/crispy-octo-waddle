@@ -6,6 +6,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { PropertyInputs, SavedDeal } from "./lib/types";
 import { analyzeProperty, clampInputs, DEFAULT_INPUTS } from "./lib/finance";
+import { analyzeDeal } from "./lib/analyst";
 import { readInputsFromUrl } from "./lib/share";
 import * as storage from "./lib/storage";
 import InputForm from "./components/InputForm";
@@ -14,8 +15,10 @@ import ProjectionChart from "./components/ProjectionChart";
 import ProjectionTable from "./components/ProjectionTable";
 import DealManager from "./components/DealManager";
 import ComparisonTable from "./components/ComparisonTable";
+import DocumentUpload from "./components/DocumentUpload";
+import AnalystReport from "./components/AnalystReport";
 
-type View = "analyze" | "compare";
+type View = "analyze" | "analyst" | "compare";
 
 export default function App() {
   // On first load, prefer inputs from a shared link; otherwise use the example.
@@ -24,6 +27,8 @@ export default function App() {
   );
   const [savedDeals, setSavedDeals] = useState<SavedDeal[]>([]);
   const [view, setView] = useState<View>("analyze");
+  // Documents attached on the AI Analyst tab (read by AI in a future phase).
+  const [documents, setDocuments] = useState<File[]>([]);
 
   // Load any previously saved deals from the browser once, on startup.
   useEffect(() => {
@@ -32,7 +37,10 @@ export default function App() {
 
   // `useMemo` recomputes the analysis only when `inputs` changes, so typing
   // stays snappy. We clamp first so bad inputs can't produce nonsense.
-  const result = useMemo(() => analyzeProperty(clampInputs(inputs)), [inputs]);
+  const cleanInputs = useMemo(() => clampInputs(inputs), [inputs]);
+  const result = useMemo(() => analyzeProperty(cleanInputs), [cleanInputs]);
+  // The Deal Analyst's verdict/risks/questions, derived from the same numbers.
+  const analysis = useMemo(() => analyzeDeal(cleanInputs), [cleanInputs]);
 
   // --- Saved-deal handlers -------------------------------------------------
   function handleSave(name: string) {
@@ -76,6 +84,12 @@ export default function App() {
               Analyze
             </TabButton>
             <TabButton
+              active={view === "analyst"}
+              onClick={() => setView("analyst")}
+            >
+              🤖 AI Analyst
+            </TabButton>
+            <TabButton
               active={view === "compare"}
               onClick={() => setView("compare")}
             >
@@ -86,7 +100,7 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-6">
-        {view === "analyze" ? (
+        {view === "analyze" && (
           <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
             {/* Left: inputs */}
             <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -111,9 +125,22 @@ export default function App() {
               <ProjectionTable projection={result.projection} />
             </section>
           </div>
-        ) : (
-          <ComparisonTable deals={savedDeals} />
         )}
+
+        {view === "analyst" && (
+          <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
+            {/* Left: document upload */}
+            <section>
+              <DocumentUpload files={documents} onChange={setDocuments} />
+            </section>
+            {/* Right: the analyst's verdict, risks, and seller questions */}
+            <section>
+              <AnalystReport analysis={analysis} />
+            </section>
+          </div>
+        )}
+
+        {view === "compare" && <ComparisonTable deals={savedDeals} />}
       </main>
 
       <footer className="mx-auto max-w-6xl px-4 py-6 text-center text-xs text-slate-400">

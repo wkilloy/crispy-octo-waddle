@@ -1,91 +1,101 @@
-# Roadmap: From Free Tool to Paid Product
+# Roadmap: The AI Deal Analyst
 
-This document is the business plan for the Rental Property Analyzer. The current
-MVP is a free, browser-only calculator. The steps below turn it into a
-monetizable SaaS — and each step is a self-contained learning milestone you can
-talk about in an interview.
+**Product vision:** *"ChatGPT for real estate underwriting."* An investor uploads
+the deal documents (offering memorandum, rent roll, T12, financial statements)
+and instantly gets a verdict — good deal / bad deal, cap rate, cash-on-cash
+return, the biggest risks, and the questions to ask the seller.
 
-> **Why this order?** Each phase adds the *minimum* needed to unlock the next
-> source of value: first give users a reason to come back (save deals), then a
-> reason to pay (Pro features), then collect the money (payments).
+**Target users:** real estate investors, house flippers, and small developers —
+high-value users who lose hours per deal on manual underwriting.
 
----
+**Why it can charge $99–$499/month:** it saves expensive people real time, the
+analysis quality reflects genuine finance expertise, and it needs no MLS access.
 
-## Phase 0 — MVP (done ✅)
-
-A working, deployable analyzer with tested financial math. This alone is a
-strong portfolio piece: it proves you can ship real software *and* that you
-understand real-estate finance.
-
-**Resume framing:** "Built and deployed a React/TypeScript rental-property
-underwriting tool with a unit-tested financial engine (cap rate, cash-on-cash,
-DSCR, multi-year ROI projection)."
+> **The core design principle (say this in interviews):** the AI never does the
+> arithmetic. Our verified, unit-tested finance engine computes every number;
+> the AI only *extracts* figures from documents and *adds judgment*. That makes
+> the financial output trustworthy — the #1 objection to "AI for finance."
 
 ---
 
-## Phase 1 — Accounts & saved properties
+## Phase 0 — Foundation (done ✅)
 
-Let users create an account and save the deals they analyze.
+- A deployed React/TypeScript app with a **unit-tested finance engine** (cap
+  rate, cash-on-cash, NOI, DSCR, amortization, multi-year projection).
+- **Save / compare / share** deals.
+- A working **rules-based Deal Analyst** (`src/lib/analyst.ts`): verdict, score,
+  risks, and seller questions derived from the verified metrics.
+- A **document-upload UI** and an `analyzeDealWithAI` integration seam, ready for
+  the AI layer to drop in.
 
-- **Tech:** [Supabase](https://supabase.com) — free tier, gives you auth +
-  a Postgres database with very little code. Beginner-friendly.
-- **What to build:** sign up / log in, a "Save this property" button, and a "My
-  Properties" list.
-- **Why it matters:** saved data is what makes a tool *sticky* — users return,
-  which is the precondition for charging them.
+**Resume framing today:** "Built and deployed an AI-ready real-estate
+underwriting tool with a unit-tested financial engine and a rules-based deal
+analyst; architected so document-reading AI plugs in without touching the math."
 
-## Phase 2 — Free vs. Pro tiers
+---
 
-Define what's free and what's worth paying for.
+## Phase 1 — Turn on the AI (the headline feature)
 
-| Free | Pro |
+This is what makes it "ChatGPT for underwriting." Build it in this order:
+
+1. **Backend function.** Add a Vercel serverless function (`/api/analyze`). This
+   is where the Anthropic API key lives — it must *never* be in browser code.
+2. **Document → numbers.** Send the uploaded PDFs/spreadsheets to **Claude**
+   (the Anthropic API can read PDFs directly). Ask it to return a structured
+   `PropertyInputs` JSON object — the rents, expenses, price, etc.
+3. **Trusted math.** Feed those extracted numbers into the existing
+   `analyzeDeal()` — so cap rate / cash-on-cash come from *our* engine.
+4. **AI judgment.** Have Claude expand the risks and seller questions with
+   deal-specific insight from the documents (e.g. "three leases expire in Q1").
+5. **Use prompt caching** to keep costs and latency down on repeat analyses.
+
+**What you'll need:** an Anthropic API key (`console.anthropic.com`, free credits
+to start), added to Vercel as an environment variable. Cost is roughly a few
+cents per analysis — add a simple per-IP rate limit so a public demo can't run
+up a bill.
+
+## Phase 2 — Accounts & saved analyses
+
+- **Supabase** auth (free tier) so users can log in and revisit past analyses.
+- Store each uploaded deal + its AI report against the user's account.
+- This is what makes the product *sticky* — and is the precondition for charging.
+
+## Phase 3 — Monetize (Pro tiers + payments)
+
+| Free | Pro ($99–$499/mo) |
 | --- | --- |
-| Analyze any property | Everything in Free |
-| Save up to 3 properties | **Unlimited** saved properties |
-| On-screen results | **PDF investor reports** (shareable / for lenders) |
-| | **Side-by-side comparison** of multiple deals |
-| | **Rent & comp estimates** (via a data API) |
+| A few analyses / month | Unlimited analyses |
+| On-screen report | **Exportable PDF underwriting memos** |
+| Single property | **Portfolio comparison & tracking** |
+| | **Side-by-side scenario modeling** |
 
-The PDF report and deal comparison are the features investors will actually pay
-for, because they save real time when evaluating many properties.
+- **Stripe Checkout** subscriptions — the industry-standard way to bill.
+- Gate AI analyses behind plan limits enforced in the backend function.
 
-## Phase 3 — Payments
+## Phase 4 — Moat & growth (later)
 
-Charge for Pro.
-
-- **Tech:** [Stripe Checkout](https://stripe.com) + a subscription product.
-  Stripe is the industry standard and recognizable to any employer.
-- **Pricing to test:** **$9–$19 / month** (or a discounted annual plan).
-- **What to build:** a "Upgrade to Pro" button → Stripe Checkout → a webhook
-  that flips the user's account to Pro.
-
-## Phase 4 — Growth features (later)
-
-- Shareable read-only report links (great for word-of-mouth).
-- CSV import / bulk analysis for users screening many properties.
-- Integrations with market-data APIs (rent estimates, tax records).
-- A simple landing page with SEO content ("how to calculate cap rate") to bring
-  in organic traffic.
+- Deal-specific comps and market context via data APIs.
+- Shareable read-only report links (word-of-mouth growth).
+- A library of prior analyses → benchmarks ("this cap rate vs. your last 10 deals").
+- Team accounts for small investment shops.
 
 ---
 
 ## How to find your first users (the non-code part)
 
-Monetization needs users, not just features. Cheap, beginner-friendly channels:
-
-- **Reddit / forums:** r/realestateinvesting, BiggerPockets — share the free
-  tool when it genuinely helps answer someone's question (don't spam).
-- **Local REIA meetups:** real-estate investor associations love practical tools.
-- **Content:** short posts/videos walking through analyzing a real listing.
+- **BiggerPockets** forums and **r/realestateinvesting** — share the free tool
+  when it genuinely answers someone's underwriting question.
+- **Local REIA meetups** — investors love practical tools and talk to each other.
+- **Content:** short walkthroughs analyzing a real listing end-to-end.
 
 ---
 
-## Suggested build order (next session)
+## Suggested next session
 
-1. Deploy the current MVP to Vercel and get a public link. *(Validates it works
-   for real users and gives you something to share immediately.)*
-2. Add Supabase auth + save/load properties (Phase 1).
-3. Add the PDF report — the single most compelling Pro feature (Phase 2).
-4. Wire up Stripe for subscriptions (Phase 3).
+1. Decide on cost approach (your API key behind a backend vs. bring-your-own-key).
+2. Build the `/api/analyze` Vercel function + wire `analyzeDealWithAI`.
+3. Start with **one document type** (a PDF offering memo) end-to-end, then add
+   rent roll / T12 parsing.
 
-Tackle them one at a time; each is a clean, demonstrable addition to the repo.
+Each step is a clean, demonstrable addition — and Phase 1 alone turns this from a
+calculator into the product in the vision statement above.
