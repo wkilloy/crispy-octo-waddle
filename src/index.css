@@ -1,0 +1,9 @@
+/* Tailwind's three layers. These directives are replaced at build time with
+   all the utility classes we use (like `flex`, `text-lg`, `bg-white`, etc.). */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-slate-100 text-slate-800;
+}
